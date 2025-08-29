@@ -88,7 +88,7 @@ Run the backend server:
 -----------------------
 python manage.py runserver
 
-=============================================================================================================================================================================
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Frontend Setup:
 ===============
@@ -111,7 +111,27 @@ Run the frontend development server:
 ------------------------------------
 npm start
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Postman Collection
+------------------
+
+A Postman collection is included to help you test the API endpoints.
+
+Download the collection: The collection file is located at Employee-Management-Collection.postman_collection.json.
+
+Import into Postman:
+--------------------
+
+Open Postman and click the "Import" button.
+
+Select the downloaded JSON file.
+
+Set up environment variables:
+
+In the Postman environment settings, create a new environment.
+
+Define a variable named host with the value http://localhost:8000. This will allow you to use the collection with your local server.
 
 
 
