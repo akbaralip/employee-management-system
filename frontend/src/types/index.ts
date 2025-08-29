@@ -1,6 +1,5 @@
 
-// FieldType based on Django models
-export type FieldType = 'text' | 'number' | 'email' | 'password' | 'date' | 'textarea' | 'select';
+export type FieldType =  'text' | 'number' | 'email' | 'password' | 'date' | 'textarea' | 'select' | 'checkbox' | 'radio';
 
 export interface User {
     id: number;
@@ -55,8 +54,37 @@ export interface Employee {
 }
 
 export interface FormField {
-  id: string;
+  id: string; 
   label: string;
-  field_type: string;
-  required: boolean;
+  field_type: FieldType; 
+  required?: boolean;
+  options?: string[];
+  order: number;
+}
+
+export interface FormTemplate {
+  id: number;
+  name: string;
+  fields: FormField[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface EmployeeData {
+  // id?: number;
+  field_label: string;
+  field_value: string;
+}
+
+export interface Employee {
+  id: number;
+  form_template: number;
+  form_template_name: string;
+  data: EmployeeData[];
+  created_at: string;
+}
+
+export interface LoginData {
+  username?: string;
+  password?: string;
 }

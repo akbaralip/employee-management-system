@@ -20,6 +20,8 @@ class FormTemplate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"FormTemplate: {self.name}"
 
 class FormField(models.Model):
     form_template = models.ForeignKey(FormTemplate, related_name='fields', on_delete=models.CASCADE)
@@ -31,3 +33,6 @@ class FormField(models.Model):
 
     class Meta:
         ordering = ['order']
+
+    def __str__(self):
+        return f"{self.label} ({self.field_type})"

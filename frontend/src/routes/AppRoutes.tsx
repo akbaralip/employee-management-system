@@ -5,6 +5,7 @@ import LoginPage from "../pages/auth/LoginPage"
 import RegisterPage from "../pages/auth/RegisterPage"
 import DashboardPage from "../pages/dashboard/DashboardPage"
 import EmployeeListPage from "../pages/employees/EmployeeListPage"
+import EmployeeFormPage from "../pages/employees/EmployeeFormPage" 
 import ChangePasswordPage from "../pages/auth/ChangePasswordPage"
 import FormBuilderPage from "../pages/forms/FormBuilderPage"
 import ProfilePage from "../pages/ProfilePage"
@@ -22,11 +23,13 @@ const AppRoutes = () => {
                     <Route element={<Layout/>}>
                         <Route path="/" element={<DashboardPage />}/>
                         <Route path="/employees" element={<EmployeeListPage />} />
+                        <Route path="/employees/create" element={<EmployeeFormPage />} /> 
+                        <Route path="/employees/edit/:id" element={<EmployeeFormPage />} /> 
                         <Route path="/form-builder" element={<FormBuilderPage />} />
                         <Route path="/change-password" element={<ChangePasswordPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
                     </Route>
-                </Route>    
+                </Route>
             </Routes>
         </Router>
     )

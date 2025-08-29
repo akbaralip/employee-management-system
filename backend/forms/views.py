@@ -8,6 +8,7 @@ from .models import FormTemplate, FormField
 # Create your views here.
 
 class FormTemplateViewSet(viewsets.ModelViewSet):
+    queryset = FormTemplate.objects.all()
     serializer_class = FormTemplateSerializer
     permission_classes = [IsAuthenticated]
 

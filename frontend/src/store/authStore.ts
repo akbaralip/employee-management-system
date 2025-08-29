@@ -1,145 +1,52 @@
-// import { create } from 'zustand';
-// import { persist } from 'zustand/middleware';
-// import { jwtDecode } from 'jwt-decode';
-
-// interface User {
-//   username: string;
-//   email: string;
-// }
-
-// interface AuthState {
-//   accessToken: string | null;
-//   refreshToken: string | null;
-//   user: User | null;
-//   isAuthenticated: boolean;
-//   login: (tokens: { access: string; refresh: string }) => void;
-//   logout: () => void;
-//   setTokens: (tokens: { access: string; refresh: string }) => void;
-// }
-
-// const useAuthStore = create<AuthState>()(
-//   persist(
-//     (set) => ({
-//       accessToken: null,
-//       refreshToken: null,
-//       user: null,
-//       isAuthenticated: false,
-//       login: (tokens) => {
-//         const decodedUser: any = jwtDecode(tokens.access);
-//         const user: User = {
-//           username: decodedUser.username,
-//           email: decodedUser.email,
-//         };
-//         set({
-//           accessToken: tokens.access,
-//           refreshToken: tokens.refresh,
-//           user,
-//           isAuthenticated: true,
-//         });
-//       },
-//       logout: () => {
-//         set({
-//           accessToken: null,
-//           refreshToken: null,
-//           user: null,
-//           isAuthenticated: false,
-//         });
-//       },
-//       setTokens: (tokens) => {
-//         set({
-//           accessToken: tokens.access,
-//           refreshToken: tokens.refresh,
-//         });
-//       },
-//     }),
-//     {
-//       name: 'auth-storage',
-//     }
-//   )
-// );
-
-// export default useAuthStore;
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { jwtDecode } from 'jwt-decode';
+import { logoutUser } from '../api/authService';
 
-// Define your types for a cleaner codebase
-type User = {
-  username: string;
-  email: string;
-};
-
-type AuthState = {
-  accessToken: string | null;
-  refreshToken: string | null;
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (tokens: { access: string; refresh: string }) => void;
-  logout: () => void;
-  setTokens: (tokens: { access: string; refresh: string }) => void;
-};
+interface AuthState {
+    isAuthenticated: boolean;
+    user: any;
+    accessToken: string | null;
+    refreshToken: string | null;
+    login: (userData: any) => void;
+    logout: () => void;
+}
 
 const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      accessToken: null,
-      refreshToken: null,
-      user: null,
-      isAuthenticated: false,
-      login: (tokens) => {
-        const decodedUser: any = jwtDecode(tokens.access);
-        const user: User = {
-          username: decodedUser.username,
-          email: decodedUser.email,
-        };
-        set({
-          accessToken: tokens.access,
-          refreshToken: tokens.refresh,
-          user,
-          isAuthenticated: true,
-        });
-      },
-      logout: () => {
-        set({
+    persist(
+        (set, get) => ({
+          isAuthenticated: false,
+          user: null,
           accessToken: null,
           refreshToken: null,
-          user: null,
-          isAuthenticated: false,
-        });
-      },
-      setTokens: (tokens) => {
-        set({
-          accessToken: tokens.access,
-          refreshToken: tokens.refresh,
-        });
-      },
-    }),
-    {
-      name: 'auth-storage',
-      onRehydrateStorage: () => {
-        return (state) => {
-          if (state?.accessToken) {
-            try {
-              const decodedUser: any = jwtDecode(state.accessToken);
-              const user: User = {
-                username: decodedUser.username,
-                email: decodedUser.email,
-              };
-              state.user = user;
-              state.isAuthenticated = true;
-            } catch (e) {
-              console.error('Failed to decode token on rehydration', e);
-              state.accessToken = null;
-              state.refreshToken = null;
-              state.user = null;
-              state.isAuthenticated = false;
-            }
-          }
-        };
-      },
-    }
-  )
+          login: (userData) => {
+              set({
+                  isAuthenticated: true,
+                  user: userData.user,
+                  accessToken: userData.access,
+                  refreshToken: userData.refresh,
+              });
+          },
+          logout: async () => {
+              const refreshToken = get().refreshToken;
+              if (refreshToken) {
+                  try {
+                      await logoutUser(refreshToken);
+                  } catch (error) {
+                      console.error("Failed to blacklist token:", error);
+                  }
+              }
+              set({
+                  isAuthenticated: false,
+                  user: null,
+                  accessToken: null,
+                  refreshToken: null,
+              });
+          },
+        }),
+        {
+          name: 'auth-storage',
+        }
+    )
 );
 
 export default useAuthStore;

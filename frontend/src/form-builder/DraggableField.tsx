@@ -3,7 +3,7 @@ import useFormBuilderStore from '../store/formStore';
 import { FaTrash, FaGripVertical } from 'react-icons/fa';
 
 interface DraggableFieldProps {
-  field: { id: string; label: string; fieldType: string; };
+  field: { id: string; label: string; field_type: string; };
 }
 
 const DraggableField: React.FC<DraggableFieldProps> = ({ field }) => {
@@ -20,8 +20,8 @@ const DraggableField: React.FC<DraggableFieldProps> = ({ field }) => {
         placeholder="Field Label"
       />
       <select
-        value={field.fieldType}
-        onChange={(e) => updateField(field.id, { fieldType: e.target.value as any })}
+        value={field.field_type}
+        onChange={(e) => updateField(field.id, { field_type: e.target.value as any })}
         className="p-2 border rounded"
       >
         <option value="text">Text</option>
