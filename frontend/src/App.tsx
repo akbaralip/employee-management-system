@@ -1,10 +1,15 @@
+import { ToastContainer } from "react-toastify"
+import AppRoutes from "./routes/AppRoutes"
 
 function App() {
   return (
     <>
-     <div>
-        <h1 className='text-red-400'>hello</h1>
-      </div>
+      <AppRoutes/>
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+      />
     </>
   )
 }
