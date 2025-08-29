@@ -9,4 +9,6 @@ router.register(r'fields', FormFieldViewSet, basename="field")
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('templates/<int:pk>/reorder_fields/', FormTemplateViewSet.as_view({'post': 'reorder_fields'}),
+         name='template-reorder-fields'),
 ]
