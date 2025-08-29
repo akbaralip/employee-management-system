@@ -18,6 +18,8 @@ const LoginPage = () => {
   setLoading(true);
   try {
     const response = await loginUser({ username, password });
+    console.log(response.data);
+    
     login(response.data); 
     toast.success('Login successful! Welcome back.');
     navigate('/');
