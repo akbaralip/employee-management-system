@@ -1,6 +1,7 @@
 const EmployeeListSkeleton = () => {
   return (
     <div className="animate-pulse p-4">
+        
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 space-y-2 md:space-y-0">
         <div className="h-10 bg-gray-300 rounded-lg w-full md:w-1/3"></div>
         <div className="h-10 bg-blue-300 rounded-lg w-full md:w-32"></div>
