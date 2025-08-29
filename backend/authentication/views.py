@@ -4,9 +4,34 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
-from .serializers import UserRegistrationSerializer, ChangePasswordSerializer
+from .serializers import UserRegistrationSerializer, ChangePasswordSerializer, CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Create your views here.
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        tokens = serializer.validated_data
+
+        user = serializer.user
+
+        return Response({
+            'access': tokens['access'],
+            'refresh': tokens['refresh'],
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+            }
+        })
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
