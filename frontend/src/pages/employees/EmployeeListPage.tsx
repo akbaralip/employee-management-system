@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getEmployees, deleteEmployee, searchEmployees } from "../../api/employeeService";
 import debounce from 'lodash/debounce';
 import EmployeeListSkeleton from "../../components/common/skeletons/EmployeeListSkeleton";
+import { FaPlus } from 'react-icons/fa';
 
 const EmployeeListPage = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);
@@ -79,7 +80,7 @@ const EmployeeListPage = () => {
                     onClick={() => navigate('/employees/create')}
                     className="flex items-center px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
                 >
-                    <span className="mr-2">➕</span> Add Employee
+                    <FaPlus className="mr-2" /> Add Employee
                 </button>
             </div>
 
