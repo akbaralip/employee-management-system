@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "YOUR-UNIQUE-ID",
+		"name": "Employee Management API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"description": "API collection for a Django project with user authentication, employee management, and form templates."
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var jsonData = JSON.parse(responseBody);",
+					"if (responseCode.code === 201 || responseCode.code === 200) {",
+					"    if (jsonData.access) {",
+					"        pm.environment.set('access_token', jsonData.access);",
+					"    }",
+					"}",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000"
+		}
+	],
+	"item": [
+		{
+			"name": "User Authentication",
+			"description": "Requests for user registration, login, and token management.",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"testuser@example.com\",\n    \"password\": \"your_strong_password\",\n    \"password_confirm\": \"your_strong_password\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Get Tokens)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"your_strong_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"{{refresh_token_here}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/refresh/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"old_password\": \"your_old_password\",\n    \"new_password\": \"your_new_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/change-password/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"change-password",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Form Templates",
+			"description": "CRUD operations for Form Templates.",
+			"item": [
+				{
+					"name": "Create Form Template",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Employee Onboarding Form\",\n    \"fields\": [\n        {\n            \"label\": \"Employee ID\",\n            \"field_type\": \"TEXT\",\n            \"required\": true\n        },\n        {\n            \"label\": \"Date of Joining\",\n            \"field_type\": \"DATE\",\n            \"required\": true\n        },\n        {\n            \"label\": \"Department\",\n            \"field_type\": \"SELECT\",\n            \"options\": {\"values\": [\"HR\", \"Engineering\", \"Sales\"]},\n            \"required\": true\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/forms/templates/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"forms",
+								"templates",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Form Templates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/forms/templates/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"forms",
+								"templates",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Form Template",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/forms/templates/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"forms",
+								"templates",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"description": "CRUD operations for Employees and searching.",
+			"item": [
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"form_template\": 1,\n    \"data\": [\n        {\n            \"field_label\": \"Employee ID\",\n            \"field_value\": \"EMP-001\"\n        },\n        {\n            \"field_label\": \"Date of Joining\",\n            \"field_value\": \"2024-01-15\"\n        },\n        {\n            \"field_label\": \"Department\",\n            \"field_value\": \"Engineering\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/employees/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"employees",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/employees/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"employees",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Employee",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/employees/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"employees",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/employees/search/?q=Engineering",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"employees",
+								"search",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "Engineering"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
