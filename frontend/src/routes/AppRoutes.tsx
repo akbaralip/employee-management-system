@@ -6,6 +6,7 @@ import RegisterPage from "../pages/auth/RegisterPage"
 import DashboardPage from "../pages/dashboard/DashboardPage"
 import EmployeeListPage from "../pages/employees/EmployeeListPage"
 import EmployeeFormPage from "../pages/employees/EmployeeFormPage"
+import ChangePasswordPage from "../pages/auth/ChangePasswordPage"
 
 const AppRoutes = () => {
     return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
                         <Route path="/" element={<DashboardPage />}/>
                         <Route path="/employees" element={<EmployeeListPage />} />
                         <Route path="/form-builder" element={<EmployeeFormPage />} />
+                        <Route path="/change-password" element={<ChangePasswordPage />} />
                     </Route>
                 </Route>    
             </Routes>
