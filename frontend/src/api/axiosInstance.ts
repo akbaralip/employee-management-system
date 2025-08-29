@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "../store/authStore";
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.BASE_URL
+    baseURL: import.meta.env.VITE_API_BASE_URL
 });
 
 // Request Interceptor: Add token to headers
