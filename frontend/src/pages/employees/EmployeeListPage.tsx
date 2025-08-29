@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { getEmployees, deleteEmployee, searchEmployees } from "../../api/employeeService";
 import debounce from 'lodash/debounce';
+import EmployeeListSkeleton from "../../components/common/skeletons/EmployeeListSkeleton";
 
 const EmployeeListPage = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);
@@ -67,7 +68,7 @@ const EmployeeListPage = () => {
         debouncedFetchEmployees(query);
     };
 
-    if (loading) return <div className="text-center p-8">Loading employees...</div>;
+    if (loading) return <EmployeeListSkeleton/>
     if (error) return <div className="text-center p-8 text-red-500">Error: {error}</div>;
 
     return (
