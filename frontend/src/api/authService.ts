@@ -24,6 +24,10 @@ export const loginUser = (credentials: { username: string; password: string }): 
   return axios.post(`${API_BASE_URL}/auth/login/`, credentials);
 };
 
+export const logoutUser  = (refreshToken: string) => {
+  return axiosInstance.post('/auth/logout/', {refresh: refreshToken});
+}
+
 /**
  * @description Changes the authenticated user's password.
  * Uses the authenticated axiosInstance so the auth token is automatically included.

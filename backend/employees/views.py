@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Employee
 from .serializers import EmployeeCreateSerializer, EmployeeListSerializer
-
+from django.db.models import Q
 
 class EmployeeViewSet(viewsets.ModelViewSet):
 
@@ -28,10 +28,15 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     def search(self, request):
         query = request.query_params.get('q', '')
 
-        # Search across all dynamic fields
-        queryset = self.get_queryset().filter(
-            data__field_value__icontains=query
-        ).distinct()
+        if query:
+            # Use Q objects to search multiple fields for a single query.
+            # This is a better way to filter through a related model's fields.
+            queryset = self.get_queryset().filter(
+                Q(data__field_value__icontains=query) |
+                Q(data__field_label__icontains=query)
+            ).distinct()
+        else:
+            queryset = self.get_queryset()
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
