@@ -1,5 +1,5 @@
 import React from 'react';
-import useFormBuilderStore from '../store/formStore';
+import useFormBuilderStore from '../../store/formStore';
 import { FaTrash, FaGripVertical } from 'react-icons/fa';
 
 interface DraggableFieldProps {
