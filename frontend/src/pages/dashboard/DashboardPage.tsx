@@ -32,7 +32,9 @@ const DashboardPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {dashboardItems.map((item) => (
-          <div key={item.title} className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center">
+          <div key={item.title} className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center
+            transition-all duration-300 ease-in-out
+            hover:shadow-lg hover:shadow-indigo-500/50 hover:scale-105">
             <div className="text-4xl text-indigo-600 mb-4">{item.icon}</div>
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
             <p className="text-sm text-gray-600 mb-4">{item.description}</p>
